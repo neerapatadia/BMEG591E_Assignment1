@@ -139,10 +139,18 @@ wc -l input_iPSC_SRA66_subset_2.fastq
 
 #?# Select only the id lines (e.g. @SRR12506919.667552 667552 length=151) of the dataset (the ones that start with @ and are followed by the read id) - 0.75 pt
 ## Tip: look at the *grep* command
+grep @SRR input_iPSC_SRA66_subset_2.fastq 
+
 #?# How many reads are in the file (i.e., how many id lines are in the file)? - 1 pt
 ## Tip: Try using * | head * after the command line you use for the previous question
+grep @SRR input_iPSC_SRA66_subset_2.fastq | wc -l
+
+#based on this output, there are 2614910 reads in the output
+
 #?# Select only the reads id (e.g. @SRR12506919.667552) from the id lines - 1 pt
 ## Tip: Look into the *cut* command. Carefully read the default delimiter, is it the case for our file?
+grep @SRR input_iPSC_SRA66_subset_2.fastq | cut -d "." -f 1,3
+
 ```
 
 
@@ -151,9 +159,22 @@ wc -l input_iPSC_SRA66_subset_2.fastq
 
 ```{bash, eval=FALSE}
 #?# Save a file that contains only the reads ids (the result of our previous exercise). - 0.5 pt
+grep @SRR input_iPSC_SRA66_subset_2.fastq | cut -d "." -f 1,3 > /home/npatadia_bmeg22/assignment1_bmeg591e/read_ids.txt
+
 #?# Now, list all the files in a directory: 
+ls -al
+
 #?# What do you see? Was the subset file created correctly? - 0.25 pt
-## ----
+npatadia_bmeg22@orca01:~/assignment1_bmeg591e$ ls -al
+total 55776
+drwxr-xr-x 2 npatadia_bmeg22 orca_users     4096 Jan 23 00:29 .
+drwxr-xr-x 4 npatadia_bmeg22 orca_users     4096 Jan 21 10:46 ..
+-rw-r--r-- 1 npatadia_bmeg22 orca_users 56874655 Jan 23 00:29 read_ids.txt
+
+#using the cat command shows all of the read ids, each printed on a separate line.
+
+
+## -
 ```
 
 
@@ -164,9 +185,15 @@ There will be times where you will want to save a copy of a dataset or file befo
 ```{bash, eval=FALSE}
 #?# Create a copy of the reads ids file - 0.25 pt
 ## Tip: man cp 
+cp read_ids.txt /home/npatadia_bmeg22/assignment1_bmeg591e/read_ids_copy.txt
+
 #?# Change the name of the backup reads id file - 0.25 pt
 ## Tip: man mv
+mv read_ids_copy.txt read_ids_backup.txt 
+
 #?# Delete the copy of the reads id file - 0.25 pt
+rm read_ids_backup.txt
+
 ```
 
 ## 2. Managing Conda Environments
@@ -180,7 +207,12 @@ Conda is a package and environment manager (*https://docs.conda.io/en/latest/*).
 ## 1. Move to your home directory 
 #?# 2. Use the wget command to get the following file: https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
 ## The file extension .sh pertains to a bash script, the script you just downloaded contains all the instructions needed to install Conda to your home directory
+wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+
 #?# 3. Run the Anaconda3-2021.11-Linux-x86_64.sh bash script. IMPORTANT: say yes to all the steps when prompted! 
+chmod +x Anaconda3-2021.11-Linux-x86_64.sh
+./Anaconda3-2021.11-Linux-x86_64.sh
+
 ## 4. To finalize the installation you need to log out your current session and log in back to the server
 ```
 
@@ -203,6 +235,8 @@ To install them, we will be making use of the conda environments. Conda allows y
 ```{bash, eval=FALSE}
 #?# Create a new conda environment: - 0.5 pt
 # Tip: Consult the previously provide links or consult the conda create help (conda create --help)
+
+conda create -n assignment1_env
 ```
 
 
@@ -213,9 +247,16 @@ Now that the environment has been created, its time to add the packages that we 
 
 ```{bash, eval=FALSE}
 #?# Add fastQC bowtie2 to your conda environment: - 1 pt
+conda install -c bioconda fastqc bowtie2
+
 ## Run the following command to install samtools onto your conda environment:
+conda install -c bioconda samtools
+
 #?# Add screen to your conda environment: - 1pt 
+conda install -c conda-forge screen
+
 #?# Add htop to your conda environment: - 1pt
+conda install -c conda-forge htop
 ```
 
 
