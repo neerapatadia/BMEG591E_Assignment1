@@ -2,7 +2,7 @@
 title: "BMEG_591E_Assignment1"
 author: "Neera Patadia"
 date: "21/01/2022"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -272,7 +272,15 @@ We will use the widely used fastQC software to do a quick inspection of the data
 ## In order to open the html files on your web browser you will need to download the files to your computer
 ## Ubuntu/Linux and Mac users: look at the *scp* command
 ## Windows users: follow the following instructions: https://stackoverflow.com/questions/6217055/how-can-i-copy-a-file-from-a-remote-server-to-using-putty-in-windows
+
+fastqc /projects/bmeg/A1/input_iPSC_SRA66_subset_2.fastq -o /home/npatadia_bmeg22/assignment1_bmeg591e/
+
+
 #?# What can you say about the data quality? - 2 pt 
+"""
+When examining the per base sequence quality plot for SRA66 subset 2, 
+"""
+
 # ---
 ```
   
@@ -306,6 +314,12 @@ Another way to check on the progress of your runs and the server status is with 
 
 ```{bash, eval=FALSE}
 #?# Use the htop command to describe the status of the server - 1.5 pt
+htop
+
+"""
+according to the htop command, no one else is running anything basically, so I should be good to run the code I guess.qqhtop
+"""
+
 ```
 
 
@@ -326,6 +340,9 @@ bowtie2 -h
 ## __________________________________________________________________________________
 #?# Use the hg38 build to create an index of the human genome with bowtie2
 ## Tip: look into the bowtie2-build help (bowtie2-build --help)  - 1.5 pt
+
+bowtie2-build hg38.fa bowtie
+
 ```
 
 ### e. Alignment
@@ -338,19 +355,29 @@ We are working with paired-end data. Thus, you will need to make sure to use bot
 ```{bash, eval=FALSE}
 #?# Perform a paired-end alignment of the fastq sequences provided (located here: /projects/bmeg/A1/) to the human genome index build (located here: /projects/bmeg/indexes/hg38/ ) - 2pt
 ## Tip: look at the bowtie2 --help or the documentation on the tool website (http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml#getting-started-with-bowtie-2-lambda-phage-example)
+
+bowtie2 -x hg38_bowtie2_index -1 /projects/bmeg/A1/input_iPSC_SRA66_subset_1.fastq -2 /projects/bmeg/A1/input_iPSC_SRA66_subset_2.fastq -S /home/npatadia_bmeg22/assignment1_bmeg591e/hg38_alignment_bowtie2.sam
 ```
 
 
 ### f. Viewing the alignments
 
-Now, we will make use of **samtools** to review some basic features of the alignment. For mor information about this tool: *http://www.htslib.org/doc/*
+Now, we will make use of **samtools** to review some basic features of the alignment. For more information about this tool: *http://www.htslib.org/doc/*
 
 ```{bash, eval=FALSE}
 ## Use *samtools view* to get the:
 ## Tip: check out the different flag (-f and -F) options
 ## Tip: Read the samtools view --help, read carefully for an option that allows you to *count* the results of your search
 #?# Number of mapped reads - 1 pt
-#?# Mumber of unmapped reads - 1 pt
+samtools view -F 4 hg38_alignment_bowtie2.sam -o mapped_reads.sam
+wc -l mapped_reads.sam
+# 5195744 mapped reads
+
+#?# Number of unmapped reads - 1 pt
+samtools view -f 4 hg38_alignment_bowtie2.sam -o unmapped_reads.sam
+wc -l unmapped_reads.sam
+#34076 unmapped reads
+
 ```
 
 
