@@ -162,11 +162,13 @@ grep @SRR input_iPSC_SRA66_subset_2.fastq
 ## Tip: Try using * | head * after the command line you use for the previous question
 grep @SRR input_iPSC_SRA66_subset_2.fastq | wc -l
 
-#based on this output, there are 2614910 reads in the output
+#based on this command, there are 2614910 reads in the output
 
 #?# Select only the reads id (e.g. @SRR12506919.667552) from the id lines - 1 pt
 ## Tip: Look into the *cut* command. Carefully read the default delimiter, is it the case for our file?
 grep @SRR input_iPSC_SRA66_subset_2.fastq | cut -d "." -f 1,3
+
+#default deliminator is not the case for out file. Need to be changed to "."
 ```
 
 ### f. Saving an output
@@ -185,7 +187,7 @@ drwxr-xr-x 2 npatadia_bmeg22 orca_users     4096 Jan 23 00:29 .
 drwxr-xr-x 4 npatadia_bmeg22 orca_users     4096 Jan 21 10:46 ..
 -rw-r--r-- 1 npatadia_bmeg22 orca_users 56874655 Jan 23 00:29 read_ids.txt
 
-#using the cat command shows all of the read ids, each printed on a separate line.
+#using the cat command shows all of the read ids, each printed on a separate line. Therefore, I can conclude that the file was subsetted correctly.
 
 
 ## -
@@ -309,7 +311,7 @@ fastqc /projects/bmeg/A1/input_iPSC_SRA66_subset_2.fastq -o /home/npatadia_bmeg2
 
 #?# What can you say about the data quality? - 2 pt 
 """
-When examining the per base sequence quality plot for SRA66 subset 2, 
+When examining the per base sequence quality plot for SRA66 subset 2, the quality scores are quite high (all in the green zone of the quality graph). We can also see that the quality drops off at the end of the sequence, especially in the 150-151 basepair region. This is not unexpected as at all the clusters formed by illumina reads do not grow at the same rate, therefore the terminal ends of the read will be more error prone. 
 """
 
 # ---
@@ -355,7 +357,7 @@ processes that are being run before sending yours.
 htop
 
 """
-according to the htop command, no one else is running anything basically, so I should be good to run the code I guess.qqhtop
+according to the htop command, I was the only user listed as running processes. There are 7 tasks list, 5 of which are considered to be running. 66.2G/126G of memory are being used. 0% of the cpu is being used and 0%MEM is being used (based on the below table). 
 """
 ```
 
